@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MartinDelivery.Application\MartinDelivery.Application.csproj" />
+  </ItemGroup>
+
 </Project>
