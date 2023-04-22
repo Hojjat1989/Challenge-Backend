@@ -1,11 +1,10 @@
-﻿namespace MartinDelivery.Core.Entities
+﻿namespace MartinDelivery.Core.Entities;
+
+public enum OrderStatus
 {
-    public enum OrderStatus
-    {
-        New,
-        Accepted,
-        ReceivedByCourier,
-        Delivered,
-        Cancelled,
-    }
+    New,
+    Accepted,
+    ReceivedByCourier,
+    Delivered,
+    Cancelled,
 }

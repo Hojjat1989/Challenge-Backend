@@ -1,11 +1,10 @@
 ﻿using System;
 using MartinDelivery.Core.Base;
 
-namespace MartinDelivery.Core.Entities
+namespace MartinDelivery.Core.Entities;
+
+public class Courier : EntityBase
 {
-    public class Courier : EntityBase
-    {
-        public string Name { get; set; }
-        public string Phone { get; set; }
-    }
+    public string Name { get; set; }
+    public string Phone { get; set; }
 }

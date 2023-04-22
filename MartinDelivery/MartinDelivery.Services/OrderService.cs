@@ -5,22 +5,21 @@ using MartinDelivery.Core.Base;
 using MartinDelivery.Core.Entities;
 using MartinDelivery.Services.Mappings;
 
-namespace MartinDelivery.Services
+namespace MartinDelivery.Services;
+
+public class OrderService : IOrderService
 {
-    public class OrderService : IOrderService
+    private IRepository<Order> _orderRepository;
+
+    public OrderService(IRepository<Order> orderRepository)
     {
-        private IRepository<Order> _orderRepository;
+        _orderRepository = orderRepository;
+    }
 
-        public OrderService(IRepository<Order> orderRepository)
-        {
-            _orderRepository = orderRepository;
-        }
-
-        public int Add(OrderDto order)
-        {
-            var orderEntity = order.ToOrder();
-            _orderRepository.Add(orderEntity);
-            return orderEntity.Id;
-        }
+    public int Add(OrderDto order)
+    {
+        var orderEntity = order.ToOrder();
+        _orderRepository.Add(orderEntity);
+        return orderEntity.Id;
     }
 }

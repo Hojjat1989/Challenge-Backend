@@ -1,10 +1,9 @@
 ﻿using System;
 using MartinDelivery.Application.DTOs;
 
-namespace MartinDelivery.Application.Interfaces
+namespace MartinDelivery.Application.Interfaces;
+
+public interface IOrderService
 {
-    public interface IOrderService
-    {
-        int Add(OrderDto order);
-    }
+    int Add(OrderDto order);
 }

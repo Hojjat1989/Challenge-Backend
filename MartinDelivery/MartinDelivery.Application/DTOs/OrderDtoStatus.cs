@@ -1,11 +1,10 @@
-﻿namespace MartinDelivery.Application.DTOs
+﻿namespace MartinDelivery.Application.DTOs;
+
+public enum OrderDtoStatus
 {
-    public enum OrderDtoStatus
-    {
-        New,
-        Accepted,
-        ReceivedByCourier,
-        Delivered,
-        Cancelled,
-    }
+    New,
+    Accepted,
+    ReceivedByCourier,
+    Delivered,
+    Cancelled,
 }
