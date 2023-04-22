@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using MartinDelivery.Application.DTOs;
 using MartinDelivery.Application.Interfaces;
 using MartinDelivery.Core.Base;
@@ -17,6 +18,56 @@ public class OrderService : IOrderService
     {
         _orderRepository = orderRepository;
         _orderLogRepository = orderLogRepository;
+    }
+
+    public GenericResponse AcceptOrder(int orderId, int courierId)
+    {
+        var order = _orderRepository.GetById(orderId);
+        if (order == null)
+        {
+            return new GenericResponse
+            {
+                IsSuccessful = false,
+                Message = "سفارش یافت نشد."
+            };
+        }
+
+        if (order.CourierId.HasValue)
+        {
+            return new GenericResponse
+            {
+                IsSuccessful = false,
+                Message = "این سفارش در دسترس نیست."
+            };
+        }
+
+        if (order.Status == OrderStatus.Cancelled)
+        {
+            return new GenericResponse
+            {
+                IsSuccessful = false,
+                Message = "این سفارش کنسل شده است."
+            };
+        }
+
+        order.Status = OrderStatus.Accepted;
+        order.CourierId = courierId;
+        _orderRepository.Update(order);
+
+        var orderLog = new OrderLog
+        {
+            CreationDate = DateTime.Now,
+            Status = OrderStatus.Accepted,
+            OrderId = order.Id,
+            CourierId = courierId
+        };
+        _orderLogRepository.Add(orderLog);
+
+        return new GenericResponse
+        {
+            IsSuccessful = true,
+            Message = "انجام شد"
+        };
     }
 
     public int Add(OrderDto order)
