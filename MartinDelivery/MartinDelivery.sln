@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MartinDelivery.Infrastructu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MartinDelivery.Application", "MartinDelivery.Application\MartinDelivery.Application.csproj", "{0E31B2EB-A6DC-4DCB-A1EF-3D0AC2D8736B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MartinDelivery.Services", "MartinDelivery.Services\MartinDelivery.Services.csproj", "{02F3F679-421A-44C9-97EE-1E9EEEEBD04C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{0E31B2EB-A6DC-4DCB-A1EF-3D0AC2D8736B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E31B2EB-A6DC-4DCB-A1EF-3D0AC2D8736B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E31B2EB-A6DC-4DCB-A1EF-3D0AC2D8736B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02F3F679-421A-44C9-97EE-1E9EEEEBD04C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02F3F679-421A-44C9-97EE-1E9EEEEBD04C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02F3F679-421A-44C9-97EE-1E9EEEEBD04C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02F3F679-421A-44C9-97EE-1E9EEEEBD04C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

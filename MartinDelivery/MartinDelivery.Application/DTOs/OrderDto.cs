@@ -4,6 +4,7 @@ namespace MartinDelivery.Application.DTOs
 {
     public class OrderDto
     {
+        public int Id { get; set; }
         public int OrganizationId { get; set; }
         public int? CourierId { get; set; }
         public DateTime CreationDate { get; set; }
