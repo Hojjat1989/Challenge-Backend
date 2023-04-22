@@ -10,6 +10,5 @@ namespace MartinDelivery.Infrastructure
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderLog> OrderLogs { get; set; }
         public DbSet<Organization> Organizations { get; set; }
-        public DbSet<Pack> Packs { get; set; }
     }
 }
