@@ -29,4 +29,32 @@ public class CourierController : ControllerBase
 
         return BadRequest(result.Message);
     }
+
+    [HttpPost]
+    [Route("receive-order")]
+    public IActionResult Receive(AcceptOrderModel model)
+    {
+        var result = _orderService.ReceiveOrder(model.OrderId);
+        if (result.IsSuccessful)
+        {
+            // todo: inform organization here
+            return Ok(result.Message);
+        }
+
+        return BadRequest(result.Message);
+    }
+
+    [HttpPost]
+    [Route("deliver-order")]
+    public IActionResult Deliver(AcceptOrderModel model)
+    {
+        var result = _orderService.DeliverOrder(model.OrderId);
+        if (result.IsSuccessful)
+        {
+            // todo: inform organization here
+            return Ok(result.Message);
+        }
+
+        return BadRequest(result.Message);
+    }
 }
