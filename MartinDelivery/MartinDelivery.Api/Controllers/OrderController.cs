@@ -25,4 +25,18 @@ public class OrderController : ControllerBase
         var orderId = _orderService.Add(orderDto);
         return Ok(orderId);
     }
+
+    [HttpPost]
+    [Route("{orderId}/cancel")]
+    public IActionResult CancelOrder(int orderId)
+    {
+        var result = _orderService.CancelOrder(orderId);
+        if (result.IsSuccessful)
+        {
+            // we can inform courier here
+            return Ok(result.Message);
+        }
+
+        return BadRequest(result.Message);
+    }
 }

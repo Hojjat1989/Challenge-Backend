@@ -10,16 +10,74 @@ namespace MartinDelivery.Services;
 public class OrderService : IOrderService
 {
     private IRepository<Order> _orderRepository;
+    private IRepository<OrderLog> _orderLogRepository;
 
-    public OrderService(IRepository<Order> orderRepository)
+    public OrderService(IRepository<Order> orderRepository,
+        IRepository<OrderLog> orderLogRepository)
     {
         _orderRepository = orderRepository;
+        _orderLogRepository = orderLogRepository;
     }
 
     public int Add(OrderDto order)
     {
         var orderEntity = order.ToOrder();
         _orderRepository.Add(orderEntity);
+
+        var orderLog = new OrderLog
+        {
+            CreationDate = DateTime.Now,
+            Status = OrderStatus.New,
+            OrderId = order.Id
+        };
+        _orderLogRepository.Add(orderLog);
+
         return orderEntity.Id;
+    }
+
+    public GenericResponse CancelOrder(int orderId)
+    {
+        var order = _orderRepository.GetById(orderId);
+        if (order == null)
+        {
+            return new GenericResponse
+            {
+                IsSuccessful = false,
+                Message = "سفارش یافت نشد."
+            };
+        }
+
+        if (!CanOrderBeCancelled(order))
+        {
+            return new GenericResponse
+            {
+                IsSuccessful = false,
+                Message = "امکان کنسل کردن این سفارش وجود ندارد."
+            };
+        }
+
+        order.Status = OrderStatus.Cancelled;
+        var orderLog = new OrderLog
+        {
+            CreationDate = DateTime.Now,
+            Status = OrderStatus.Cancelled,
+            OrderId = order.Id
+        };
+
+        // this should be done in one commit by implementing unitOfWork pattern
+        _orderRepository.Update(order);
+        _orderLogRepository.Add(orderLog);
+
+        return new GenericResponse
+        {
+            IsSuccessful = true,
+            Message = "سفارش کنسل شد"
+        };
+    }
+
+    private bool CanOrderBeCancelled(Order order)
+    {
+        return order.Status == OrderStatus.New ||
+            order.Status == OrderStatus.Accepted;
     }
 }
