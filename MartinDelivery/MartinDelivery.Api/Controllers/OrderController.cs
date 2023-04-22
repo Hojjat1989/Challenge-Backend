@@ -22,7 +22,7 @@ public class OrderController : ControllerBase
     public IActionResult CreateOrder(CreateOrderModel order)
     {
         var orderDto = order.ToOrderDto();
-        _orderService.Add(orderDto);
-        return Ok();
+        var orderId = _orderService.Add(orderDto);
+        return Ok(orderId);
     }
 }
