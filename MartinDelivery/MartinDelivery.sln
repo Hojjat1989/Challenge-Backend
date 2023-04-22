@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MartinDelivery.Core", "MartinDelivery.Core\MartinDelivery.Core.csproj", "{F30B9DE2-BE4C-4F55-82A9-76210A7E483B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MartinDelivery.Core", "MartinDelivery.Core\MartinDelivery.Core.csproj", "{F30B9DE2-BE4C-4F55-82A9-76210A7E483B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MartinDelivery.Infrastructure", "MartinDelivery.Infrastructure\MartinDelivery.Infrastructure.csproj", "{65B10B85-1B61-454E-8B81-AFB4AD77363D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MartinDelivery.Infrastructure", "MartinDelivery.Infrastructure\MartinDelivery.Infrastructure.csproj", "{65B10B85-1B61-454E-8B81-AFB4AD77363D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MartinDelivery.Application", "MartinDelivery.Application\MartinDelivery.Application.csproj", "{0E31B2EB-A6DC-4DCB-A1EF-3D0AC2D8736B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MartinDelivery.Application", "MartinDelivery.Application\MartinDelivery.Application.csproj", "{0E31B2EB-A6DC-4DCB-A1EF-3D0AC2D8736B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MartinDelivery.Services", "MartinDelivery.Services\MartinDelivery.Services.csproj", "{02F3F679-421A-44C9-97EE-1E9EEEEBD04C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MartinDelivery.Services", "MartinDelivery.Services\MartinDelivery.Services.csproj", "{02F3F679-421A-44C9-97EE-1E9EEEEBD04C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MartinDelivery.Api", "MartinDelivery.Api\MartinDelivery.Api.csproj", "{45F0DD6D-AAD2-40AF-9C7B-E9D251FB581C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{02F3F679-421A-44C9-97EE-1E9EEEEBD04C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02F3F679-421A-44C9-97EE-1E9EEEEBD04C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02F3F679-421A-44C9-97EE-1E9EEEEBD04C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45F0DD6D-AAD2-40AF-9C7B-E9D251FB581C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45F0DD6D-AAD2-40AF-9C7B-E9D251FB581C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45F0DD6D-AAD2-40AF-9C7B-E9D251FB581C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45F0DD6D-AAD2-40AF-9C7B-E9D251FB581C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
