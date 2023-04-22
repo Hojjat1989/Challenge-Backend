@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using MartinDelivery.Application.Interfaces;
+using MartinDelivery.Api.Models;
 
 namespace MartinDelivery.Api.Controllers;
 
@@ -16,10 +17,10 @@ public class CourierController : ControllerBase
     }
 
     [HttpPost]
-    [Route("{courierId}/orders/{orderId}")]
-    public IActionResult Accept(int courierId, int orderId)
+    [Route("accept-order")]
+    public IActionResult Accept(AcceptOrderModel model)
     {
-        var result = _orderService.AcceptOrder(orderId, courierId);
+        var result = _orderService.AcceptOrder(model.OrderId, model.CourierId);
         if (result.IsSuccessful)
         {
             // todo: inform organization here
