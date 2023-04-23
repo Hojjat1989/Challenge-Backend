@@ -23,59 +23,34 @@ public class OrderService : IOrderService
     {
         var orderEntity = order.ToOrder();
         _orderRepository.Add(orderEntity);
-
-        var orderLog = new OrderLog
-        {
-            CreationDate = DateTime.Now,
-            Status = OrderStatus.New,
-            OrderId = order.Id
-        };
-        _orderLogRepository.Add(orderLog);
+        AddOrderLog(orderEntity);
 
         return orderEntity.Id;
     }
+
     public GenericResponse AcceptOrder(int orderId, int courierId)
     {
         var order = _orderRepository.GetById(orderId);
-        if (order == null)
+        var generalCheck = CheckOrderStatusChange(order);
+        if (!generalCheck.IsSuccessful)
+        {
+            return generalCheck;
+        }
+
+        if (order.Status != OrderStatus.New)
         {
             return new GenericResponse
             {
                 IsSuccessful = false,
-                Message = "سفارش یافت نشد."
+                Message = "این سفارش در وضعیت درست نیست."
             };
         }
 
-        if (order.CourierId.HasValue)
-        {
-            return new GenericResponse
-            {
-                IsSuccessful = false,
-                Message = "این سفارش در دسترس نیست."
-            };
-        }
-
-        if (order.Status == OrderStatus.Cancelled)
-        {
-            return new GenericResponse
-            {
-                IsSuccessful = false,
-                Message = "این سفارش کنسل شده است."
-            };
-        }
-
+        // this should be done in one commit by implementing unitOfWork pattern
         order.Status = OrderStatus.Accepted;
         order.CourierId = courierId;
         _orderRepository.Update(order);
-
-        var orderLog = new OrderLog
-        {
-            CreationDate = DateTime.Now,
-            Status = OrderStatus.Accepted,
-            OrderId = order.Id,
-            CourierId = courierId
-        };
-        _orderLogRepository.Add(orderLog);
+        AddOrderLog(order);
 
         return new GenericResponse
         {
@@ -83,25 +58,14 @@ public class OrderService : IOrderService
             Message = "انجام شد"
         };
     }
+
     public GenericResponse ReceiveOrder(int orderId)
     {
         var order = _orderRepository.GetById(orderId);
-        if (order == null)
+        var generalCheck = CheckOrderStatusChange(order);
+        if (!generalCheck.IsSuccessful)
         {
-            return new GenericResponse
-            {
-                IsSuccessful = false,
-                Message = "سفارش یافت نشد."
-            };
-        }
-
-        if (order.Status == OrderStatus.Cancelled)
-        {
-            return new GenericResponse
-            {
-                IsSuccessful = false,
-                Message = "این سفارش کنسل شده است."
-            };
+            return generalCheck;
         }
 
         if (order.Status != OrderStatus.Accepted)
@@ -113,15 +77,10 @@ public class OrderService : IOrderService
             };
         }
 
+        // this should be done in one commit by implementing unitOfWork pattern
         order.Status = OrderStatus.ReceivedByCourier;
         _orderRepository.Update(order);
-        var orderLog = new OrderLog
-        {
-            CreationDate = DateTime.Now,
-            Status = OrderStatus.ReceivedByCourier,
-            OrderId = order.Id
-        };
-        _orderLogRepository.Add(orderLog);
+        AddOrderLog(order);
 
         return new GenericResponse
         {
@@ -129,25 +88,14 @@ public class OrderService : IOrderService
             Message = "انجام شد"
         };
     }
+
     public GenericResponse DeliverOrder(int orderId)
     {
         var order = _orderRepository.GetById(orderId);
-        if (order == null)
+        var generalCheck = CheckOrderStatusChange(order);
+        if (!generalCheck.IsSuccessful)
         {
-            return new GenericResponse
-            {
-                IsSuccessful = false,
-                Message = "سفارش یافت نشد."
-            };
-        }
-
-        if (order.Status == OrderStatus.Cancelled)
-        {
-            return new GenericResponse
-            {
-                IsSuccessful = false,
-                Message = "این سفارش کنسل شده است."
-            };
+            return generalCheck;
         }
 
         if (order.Status != OrderStatus.ReceivedByCourier)
@@ -159,15 +107,10 @@ public class OrderService : IOrderService
             };
         }
 
+        // this should be done in one commit by implementing unitOfWork pattern
         order.Status = OrderStatus.Delivered;
         _orderRepository.Update(order);
-        var orderLog = new OrderLog
-        {
-            CreationDate = DateTime.Now,
-            Status = OrderStatus.Delivered,
-            OrderId = order.Id
-        };
-        _orderLogRepository.Add(orderLog);
+        AddOrderLog(order);
 
         return new GenericResponse
         {
@@ -175,6 +118,7 @@ public class OrderService : IOrderService
             Message = "انجام شد"
         };
     }
+
     public GenericResponse CancelOrder(int orderId)
     {
         var order = _orderRepository.GetById(orderId);
@@ -196,17 +140,10 @@ public class OrderService : IOrderService
             };
         }
 
-        order.Status = OrderStatus.Cancelled;
-        var orderLog = new OrderLog
-        {
-            CreationDate = DateTime.Now,
-            Status = OrderStatus.Cancelled,
-            OrderId = order.Id
-        };
-
         // this should be done in one commit by implementing unitOfWork pattern
+        order.Status = OrderStatus.Cancelled;
         _orderRepository.Update(order);
-        _orderLogRepository.Add(orderLog);
+        AddOrderLog(order);
 
         return new GenericResponse
         {
@@ -215,6 +152,51 @@ public class OrderService : IOrderService
         };
     }
 
+    private GenericResponse CheckOrderStatusChange(Order order)
+    {
+        if (order == null)
+        {
+            return new GenericResponse
+            {
+                IsSuccessful = false,
+                Message = "سفارش یافت نشد."
+            };
+        }
+
+        if (order.Status == OrderStatus.Cancelled)
+        {
+            return new GenericResponse
+            {
+                IsSuccessful = false,
+                Message = "این سفارش کنسل شده است."
+            };
+        }
+
+        if (order.Status == OrderStatus.Delivered)
+        {
+            return new GenericResponse
+            {
+                IsSuccessful = false,
+                Message = "این سفارش دریافت شده است."
+            };
+        }
+
+        return new GenericResponse
+        {
+            IsSuccessful = true
+        };
+    }
+    private void AddOrderLog(Order order)
+    {
+        var orderLog = new OrderLog
+        {
+            CreationDate = DateTime.Now,
+            Status = order.Status,
+            CourierId = order.CourierId,
+            OrderId = order.Id
+        };
+        _orderLogRepository.Add(orderLog);
+    }
     private bool CanOrderBeCancelled(Order order)
     {
         return order.Status == OrderStatus.New ||
