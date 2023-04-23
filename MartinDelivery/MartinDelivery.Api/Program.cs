@@ -6,10 +6,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-var connections = builder.Configuration.GetSection(nameof(ConnectionStrings));
-builder.Services.Register(connections);
+builder.Services.AddSwaggerGen();
+
+var connectionStrings = builder.Configuration.GetSection(nameof(ConnectionStrings));
+builder.Services.Register(connectionStrings);
 
 var app = builder.Build();
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    options.RoutePrefix = string.Empty;
+});
+
 app.MapControllers();
 
 app.Run();
