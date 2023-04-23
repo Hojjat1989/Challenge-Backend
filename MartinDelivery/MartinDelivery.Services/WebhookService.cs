@@ -11,12 +11,21 @@ public class WebhookService : IWebhookService
 {
     private readonly IRepository<WebhookEvent> _webhookEventRepository;
     private readonly IRepository<WebhookSubscribe> _webhookSubscribeRepository;
+    private readonly IRepository<WebhookAttempt> _webhookAttemptRepository;
 
     public WebhookService(IRepository<WebhookEvent> webhookEventRepository,
-        IRepository<WebhookSubscribe> webhookSubscribeRepository)
+        IRepository<WebhookSubscribe> webhookSubscribeRepository,
+        IRepository<WebhookAttempt> webhookAttemptRepository)
     {
         _webhookEventRepository = webhookEventRepository;
         _webhookSubscribeRepository = webhookSubscribeRepository;
+        _webhookAttemptRepository = webhookAttemptRepository;
+    }
+
+    public void AddWebhookAttempt(WebhookAttemptDto webhookAttempt)
+    {
+        var dbWebhookAttempt = webhookAttempt.ToWebhookAttempt();
+        _webhookAttemptRepository.Add(dbWebhookAttempt);
     }
 
     public int AddWebhookEvent(WebhookEventDto webhookEvent)

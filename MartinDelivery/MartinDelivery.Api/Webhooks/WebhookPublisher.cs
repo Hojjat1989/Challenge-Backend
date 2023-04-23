@@ -34,7 +34,7 @@ public class WebhookPublisher : IWebhookPublisher
         {
             CreationDate = DateTime.Now,
             WebhookName = OrderStatusWebhookName,
-            Data = serializedOrder,
+            Payload = serializedOrder,
         };
 
         _webhookService.AddWebhookEvent(webhookEvent);
@@ -43,7 +43,7 @@ public class WebhookPublisher : IWebhookPublisher
         foreach (var item in eventSubscribers)
         {
             // call subscriber
-            BackgroundJob.Enqueue<WebhookSender>(sender => sender.Send(item, webhookEvent.Data, 1));
+            BackgroundJob.Enqueue<WebhookSender>(sender => sender.Send(item, webhookEvent.Payload, 1));
         }
     }
 }

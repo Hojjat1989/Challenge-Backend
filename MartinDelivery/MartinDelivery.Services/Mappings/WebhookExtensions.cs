@@ -12,7 +12,7 @@ public static class WebhookExtensions
         {
             Id = webhookEventDto.Id,
             CreationDate = webhookEventDto.CreationDate,
-            Data = webhookEventDto.Data,
+            Payload = webhookEventDto.Payload,
             WebhookName = webhookEventDto.WebhookName
         };
     }
@@ -23,7 +23,7 @@ public static class WebhookExtensions
         {
             Id = webhookEvent.Id,
             CreationDate = webhookEvent.CreationDate,
-            Data = webhookEvent.Data,
+            Payload = webhookEvent.Payload,
             WebhookName = webhookEvent.WebhookName
         };
     }
@@ -51,6 +51,19 @@ public static class WebhookExtensions
             CreationDate = webhookSubscribe.CreationDate,
             OrganizationId = webhookSubscribe.OrganizationId,
             Url = webhookSubscribe.Url
+        };
+    }
+
+    public static WebhookAttempt ToWebhookAttempt(this WebhookAttemptDto webhookAttemptDto)
+    {
+        return new WebhookAttempt
+        {
+            Id = webhookAttemptDto.Id,
+            CreationDate = webhookAttemptDto.CreationDate,
+            OrganizationId = webhookAttemptDto.OrganizationId,
+            Payload = webhookAttemptDto.Payload,
+            ResponseStatusCode = webhookAttemptDto.ResponseStatusCode,
+            WebhookName = webhookAttemptDto.WebhookName,
         };
     }
 }
