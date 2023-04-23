@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
-using MartinDelivery.Application.Interfaces;
 using MartinDelivery.Api.Models;
 using MartinDelivery.Api.Auth;
 using MartinDelivery.Api.Utilities;
 using MartinDelivery.Api.Webhooks;
+using MartinDelivery.Application;
 
 namespace MartinDelivery.Api.Controllers;
 

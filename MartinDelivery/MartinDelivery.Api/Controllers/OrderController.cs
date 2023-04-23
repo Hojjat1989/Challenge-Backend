@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using MartinDelivery.Api.Models;
-using MartinDelivery.Application.Interfaces;
 using MartinDelivery.Api.Utilities;
 using MartinDelivery.Api.Auth;
+using MartinDelivery.Application;
 
 namespace MartinDelivery.Api.Controllers;
 

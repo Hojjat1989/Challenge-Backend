@@ -1,7 +1,7 @@
 ﻿using System;
 using MartinDelivery.Application.DTOs;
 
-namespace MartinDelivery.Application.Interfaces;
+namespace MartinDelivery.Application;
 
 public interface IWebhookService
 {

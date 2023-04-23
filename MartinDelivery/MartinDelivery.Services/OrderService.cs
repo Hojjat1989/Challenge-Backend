@@ -1,6 +1,6 @@
 ﻿using System;
+using MartinDelivery.Application;
 using MartinDelivery.Application.DTOs;
-using MartinDelivery.Application.Interfaces;
 using MartinDelivery.Core.Base;
 using MartinDelivery.Core.Entities;
 using MartinDelivery.Services.Mappings;

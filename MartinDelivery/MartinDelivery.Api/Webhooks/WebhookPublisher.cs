@@ -1,7 +1,8 @@
 ﻿using System;
 using Hangfire;
+using MartinDelivery.Api.Utilities;
+using MartinDelivery.Application;
 using MartinDelivery.Application.DTOs;
-using MartinDelivery.Application.Interfaces;
 using Newtonsoft.Json;
 
 namespace MartinDelivery.Api.Webhooks;
@@ -23,7 +24,12 @@ public class WebhookPublisher : IWebhookPublisher
     public void OrderStatusChanged(int orderId)
     {
         var order = _orderService.GetOrderById(orderId);
-        var serializedOrder = JsonConvert.SerializeObject(order);
+        if (order == null)
+        {
+            return;
+        }
+
+        var serializedOrder = JsonConvert.SerializeObject(order.ToOrderModel());
         var webhookEvent = new WebhookEventDto
         {
             CreationDate = DateTime.Now,
