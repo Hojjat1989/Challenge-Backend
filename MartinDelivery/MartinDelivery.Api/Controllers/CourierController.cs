@@ -4,6 +4,7 @@ using MartinDelivery.Application.Interfaces;
 using MartinDelivery.Api.Models;
 using MartinDelivery.Api.Auth;
 using MartinDelivery.Api.Utilities;
+using MartinDelivery.Api.Webhooks;
 
 namespace MartinDelivery.Api.Controllers;
 
@@ -12,12 +13,15 @@ namespace MartinDelivery.Api.Controllers;
 public class CourierController : ControllerBase, IServiceWithCourier
 {
     private IOrderService _orderService;
+    private IWebhookPublisher _webhookPublisher;
 
     public int CourierId { get; set; }
 
-    public CourierController(IOrderService orderService)
+    public CourierController(IOrderService orderService,
+        IWebhookPublisher webhookPublisher)
     {
         _orderService = orderService;
+        _webhookPublisher = webhookPublisher;
     }
 
     [HttpGet]
@@ -42,7 +46,7 @@ public class CourierController : ControllerBase, IServiceWithCourier
         var result = _orderService.AcceptOrder(model.OrderId, model.CourierId);
         if (result.IsSuccessful)
         {
-            // todo: inform organization here
+            _webhookPublisher.OrderStatusChanged(model.OrderId);
             return Ok(result.Message);
         }
 
@@ -62,7 +66,7 @@ public class CourierController : ControllerBase, IServiceWithCourier
         var result = _orderService.ReceiveOrder(model.OrderId);
         if (result.IsSuccessful)
         {
-            // todo: inform organization here
+            _webhookPublisher.OrderStatusChanged(model.OrderId);
             return Ok(result.Message);
         }
 
@@ -82,7 +86,7 @@ public class CourierController : ControllerBase, IServiceWithCourier
         var result = _orderService.DeliverOrder(model.OrderId);
         if (result.IsSuccessful)
         {
-            // todo: inform organization here
+            _webhookPublisher.OrderStatusChanged(model.OrderId);
             return Ok(result.Message);
         }
 
