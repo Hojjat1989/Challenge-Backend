@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MartinDelivery.Application.Interfaces;
 using MartinDelivery.Api.Models;
 using MartinDelivery.Api.Auth;
+using MartinDelivery.Api.Utilities;
 
 namespace MartinDelivery.Api.Controllers;
 
@@ -17,6 +18,15 @@ public class CourierController : ControllerBase, IServiceWithCourier
     public CourierController(IOrderService orderService)
     {
         _orderService = orderService;
+    }
+
+    [HttpGet]
+    [Route("available-orders")]
+    [InjectCourier]
+    public IActionResult GetAvailableOrders(int offset, int size)
+    {
+        var orderList = _orderService.GetAvailableOrders(offset, size);
+        return Ok(orderList.ToOrderListModel());
     }
 
     [HttpPost]

@@ -46,4 +46,22 @@ public class Repository<T> : IRepository<T> where T : EntityBase
     {
         return _dbContext.Set<T>().Where(predicate).AsEnumerable();
     }
+
+    public IEnumerable<T> GetAll(Expression<Func<T, bool>> predicate, int offset, int size)
+    {
+        return _dbContext.Set<T>().Where(predicate)
+            .OrderByDescending(x => x.Id)
+            .Skip(offset)
+            .Take(size).AsEnumerable();
+    }
+
+    public int Count()
+    {
+        return _dbContext.Set<T>().Count();
+    }
+
+    public int Count(Expression<Func<T, bool>> predicate)
+    {
+        return _dbContext.Set<T>().Where(predicate).Count();
+    }
 }

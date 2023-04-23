@@ -35,6 +35,20 @@ public class OrderService : IOrderService
         return order.ToOrderDto();
     }
 
+    public OrderListDto GetAvailableOrders(int offset, int size)
+    {
+        var totalCount = _orderRepository.Count(x => x.Status == OrderStatus.New);
+        var orders = _orderRepository.GetAll(x => x.Status == OrderStatus.New, offset, size);
+        var orderDtos = orders.Select(x => x.ToOrderDto()).ToArray();
+
+        return new OrderListDto
+        {
+            TotalCount = totalCount,
+            Orders = orderDtos,
+            HasMore = totalCount > (offset + size)
+        };
+    }
+
     public GenericResponse AcceptOrder(int orderId, int courierId)
     {
         lock (IdLocker.OrderIdLock(orderId))
