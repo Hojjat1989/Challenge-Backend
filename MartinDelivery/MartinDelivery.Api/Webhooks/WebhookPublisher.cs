@@ -1,4 +1,5 @@
 ﻿using System;
+using Hangfire;
 using MartinDelivery.Application.DTOs;
 using MartinDelivery.Application.Interfaces;
 using Newtonsoft.Json;
@@ -36,6 +37,7 @@ public class WebhookPublisher : IWebhookPublisher
         foreach (var item in eventSubscribers)
         {
             // call subscriber
+            BackgroundJob.Enqueue<WebhookSender>(sender => sender.Send(item, webhookEvent.Data, 1));
         }
     }
 }
