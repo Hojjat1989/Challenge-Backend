@@ -4,6 +4,7 @@ using MartinDelivery.Application.Interfaces;
 using MartinDelivery.Core.Base;
 using MartinDelivery.Core.Entities;
 using MartinDelivery.Services.Mappings;
+using MartinDelivery.Services.Utilities;
 
 namespace MartinDelivery.Services;
 
@@ -36,27 +37,30 @@ public class OrderService : IOrderService
 
     public GenericResponse AcceptOrder(int orderId, int courierId)
     {
-        var order = _orderRepository.GetById(orderId);
-        var generalCheck = CheckOrderStatusChange(order);
-        if (!generalCheck.IsSuccessful)
+        lock (IdLocker.OrderIdLock(orderId))
         {
-            return generalCheck;
-        }
-
-        if (order.Status != OrderStatus.New)
-        {
-            return new GenericResponse
+            var order = _orderRepository.GetById(orderId);
+            var generalCheck = CheckOrderStatusChange(order);
+            if (!generalCheck.IsSuccessful)
             {
-                IsSuccessful = false,
-                Message = "این سفارش در وضعیت درست نیست."
-            };
-        }
+                return generalCheck;
+            }
 
-        // this should be done in one commit by implementing unitOfWork pattern
-        order.Status = OrderStatus.Accepted;
-        order.CourierId = courierId;
-        _orderRepository.Update(order);
-        AddOrderLog(order);
+            if (order.Status != OrderStatus.New)
+            {
+                return new GenericResponse
+                {
+                    IsSuccessful = false,
+                    Message = "این سفارش در وضعیت درست نیست."
+                };
+            }
+
+            // this should be done in one commit by implementing unitOfWork pattern
+            order.Status = OrderStatus.Accepted;
+            order.CourierId = courierId;
+            _orderRepository.Update(order);
+            AddOrderLog(order);
+        }
 
         return new GenericResponse
         {
