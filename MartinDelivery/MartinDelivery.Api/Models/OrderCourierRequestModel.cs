@@ -2,7 +2,7 @@
 
 namespace MartinDelivery.Api.Models;
 
-public class AcceptOrderModel
+public class OrderCourierRequestModel
 {
     public int CourierId { get; set; }
     public int OrderId { get; set; }

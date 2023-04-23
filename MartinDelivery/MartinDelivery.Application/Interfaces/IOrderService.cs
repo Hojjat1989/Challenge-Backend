@@ -6,6 +6,7 @@ namespace MartinDelivery.Application.Interfaces;
 public interface IOrderService
 {
     int Add(OrderDto order);
+    OrderDto GetOrderById(int id);
 
     GenericResponse AcceptOrder(int orderId, int courierId);
     GenericResponse ReceiveOrder(int orderId);

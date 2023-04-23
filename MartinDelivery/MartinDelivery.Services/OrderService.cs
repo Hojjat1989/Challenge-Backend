@@ -28,6 +28,12 @@ public class OrderService : IOrderService
         return orderEntity.Id;
     }
 
+    public OrderDto GetOrderById(int id)
+    {
+        var order = _orderRepository.GetById(id);
+        return order.ToOrderDto();
+    }
+
     public GenericResponse AcceptOrder(int orderId, int courierId)
     {
         var order = _orderRepository.GetById(orderId);
