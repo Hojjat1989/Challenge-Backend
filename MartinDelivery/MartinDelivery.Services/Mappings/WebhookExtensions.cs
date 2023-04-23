@@ -64,6 +64,8 @@ public static class WebhookExtensions
             Payload = webhookAttemptDto.Payload,
             ResponseStatusCode = webhookAttemptDto.ResponseStatusCode,
             WebhookName = webhookAttemptDto.WebhookName,
+            AuthorizationHeader = webhookAttemptDto.AuthorizationHeader,
+            Url = webhookAttemptDto.Url
         };
     }
 }

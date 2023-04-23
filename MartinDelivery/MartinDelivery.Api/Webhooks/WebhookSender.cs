@@ -48,7 +48,9 @@ public class WebhookSender
             OrganizationId = subscribeDto.OrganizationId,
             Payload = payload,
             WebhookName = subscribeDto.WebhookName,
-            ResponseStatusCode = statusCode.ToString()
+            ResponseStatusCode = statusCode.ToString(),
+            AuthorizationHeader = subscribeDto.AuthorizationHeader,
+            Url = subscribeDto.Url
         };
         _webhookService.AddWebhookAttempt(attempt);
     }

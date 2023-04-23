@@ -46,7 +46,7 @@ public class CourierController : ControllerBase, IServiceWithCourier
         var result = _orderService.AcceptOrder(model.OrderId, model.CourierId);
         if (result.IsSuccessful)
         {
-            _webhookPublisher.OrderStatusChanged(model.OrderId);
+            _webhookPublisher.OrderStatusChanged(model.OrderId, model.CourierLocation);
             return Ok(result.Message);
         }
 
@@ -66,7 +66,7 @@ public class CourierController : ControllerBase, IServiceWithCourier
         var result = _orderService.ReceiveOrder(model.OrderId);
         if (result.IsSuccessful)
         {
-            _webhookPublisher.OrderStatusChanged(model.OrderId);
+            _webhookPublisher.OrderStatusChanged(model.OrderId, model.CourierLocation);
             return Ok(result.Message);
         }
 
@@ -86,10 +86,24 @@ public class CourierController : ControllerBase, IServiceWithCourier
         var result = _orderService.DeliverOrder(model.OrderId);
         if (result.IsSuccessful)
         {
-            _webhookPublisher.OrderStatusChanged(model.OrderId);
+            _webhookPublisher.OrderStatusChanged(model.OrderId, model.CourierLocation);
             return Ok(result.Message);
         }
 
         return BadRequest(result.Message);
+    }
+
+    [HttpPost]
+    [Route("set-location")]
+    [InjectCourier]
+    public IActionResult SetLocation(Location location)
+    {
+        var courierOrders = _orderService.GetCourierOrders(CourierId);
+        foreach (var order in courierOrders)
+        {
+            _webhookPublisher.OrderStatusChanged(order, location);
+        }
+
+        return Ok();
     }
 }

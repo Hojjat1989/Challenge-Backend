@@ -49,6 +49,12 @@ public class OrderService : IOrderService
         };
     }
 
+    public List<OrderDto> GetCourierOrders(int courierId)
+    {
+        var orders = _orderRepository.GetAll(x => x.CourierId == courierId).ToList();
+        return orders.Select(x => x.ToOrderDto()).ToList();
+    }
+
     public GenericResponse AcceptOrder(int orderId, int courierId)
     {
         lock (IdLocker.OrderIdLock(orderId))

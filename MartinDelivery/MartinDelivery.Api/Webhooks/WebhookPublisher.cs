@@ -1,5 +1,6 @@
 ﻿using System;
 using Hangfire;
+using MartinDelivery.Api.Models;
 using MartinDelivery.Api.Utilities;
 using MartinDelivery.Application;
 using MartinDelivery.Application.DTOs;
@@ -21,15 +22,25 @@ public class WebhookPublisher : IWebhookPublisher
         _orderService = orderService;
     }
 
-    public void OrderStatusChanged(int orderId)
+    public void OrderStatusChanged(int orderId, Location courierLocation)
     {
         var order = _orderService.GetOrderById(orderId);
+        OrderStatusChanged(order, courierLocation);
+    }
+
+    public void OrderStatusChanged(OrderDto order, Location courierLocation)
+    {
         if (order == null)
         {
             return;
         }
 
-        var serializedOrder = JsonConvert.SerializeObject(order.ToOrderModel());
+        var orderLocation = new OrderLocationModel
+        {
+            Order = order.ToOrderModel(),
+            CourierLocation = courierLocation
+        };
+        var serializedOrder = JsonConvert.SerializeObject(orderLocation);
         var webhookEvent = new WebhookEventDto
         {
             CreationDate = DateTime.Now,
@@ -43,7 +54,7 @@ public class WebhookPublisher : IWebhookPublisher
         foreach (var item in eventSubscribers)
         {
             // call subscriber
-            BackgroundJob.Enqueue<WebhookSender>(sender => sender.Send(item, webhookEvent.Payload, 1));
+            BackgroundJob.Enqueue<WebhookSender>(sender => sender.Send(item, serializedOrder, 1));
         }
     }
 }
