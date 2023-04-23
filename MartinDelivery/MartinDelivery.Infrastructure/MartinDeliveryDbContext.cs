@@ -1,11 +1,17 @@
 ﻿using System;
-using System.Data.Entity;
 using MartinDelivery.Core.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace MartinDelivery.Infrastructure;
 
 public class MartinDeliveryDbContext : DbContext
 {
+    public MartinDeliveryDbContext(DbContextOptions options) : base(options)
+    {
+        ChangeTracker.AutoDetectChangesEnabled = false;
+        ChangeTracker.LazyLoadingEnabled = false;
+    }
+
     public DbSet<Courier> Couriers { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderLog> OrderLogs { get; set; }

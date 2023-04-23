@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Linq.Expressions;
 using MartinDelivery.Core.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace MartinDelivery.Infrastructure;
 
