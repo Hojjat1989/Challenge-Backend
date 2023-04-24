@@ -10,6 +10,8 @@ public class MartinDeliveryDbContext : DbContext
     {
         ChangeTracker.AutoDetectChangesEnabled = false;
         ChangeTracker.LazyLoadingEnabled = false;
+
+        Database.EnsureCreated();
     }
 
     public DbSet<Courier> Couriers { get; set; }
