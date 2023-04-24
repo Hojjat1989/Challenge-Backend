@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using MartinDelivery.Core.Base;
 
 namespace MartinDelivery.Core.Entities;
 
+[Table("WebhookSubscribe")]
 public class WebhookSubscribe : EntityBase
 {
     public DateTime CreationDate { get; set; }

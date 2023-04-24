@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using MartinDelivery.Core.Base;
 
 namespace MartinDelivery.Core.Entities;
 
+[Table("Order")]
 public class Order : EntityBase
 {
     public int OrganizationId { get; set; }
