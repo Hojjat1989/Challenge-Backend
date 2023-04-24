@@ -51,7 +51,9 @@ public class OrderService : IOrderService
 
     public List<OrderDto> GetCourierOrders(int courierId)
     {
-        var orders = _orderRepository.GetAll(x => x.CourierId == courierId).ToList();
+        var orders = _orderRepository.GetAll(x => x.CourierId == courierId &&
+            x.Status != OrderStatus.Cancelled &&
+            x.Status != OrderStatus.Delivered).ToList();
         return orders.Select(x => x.ToOrderDto()).ToList();
     }
 
